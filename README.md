@@ -18,4 +18,4 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
 
-### fucking this project I am so lazy to update this project. As soon I will come back to debug so if u can debug it with out me pl do it because I am so lazy 
+### it just a test project I am so lazy to update this project. As soon I will come back to debug so if u can debug it with out me pl do it because I am so lazy 
