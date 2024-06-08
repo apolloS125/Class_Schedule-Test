@@ -1,4 +1,3 @@
-// pages/index.js
 import { useState } from 'react';
 import ClassForm from '../components/ClassForm';
 import ScheduleTable from '../components/ScheduleTable';
@@ -46,6 +45,13 @@ const Home = () => {
         }
     };
 
+    const handleDeleteClass = (day, time) => {
+        const newSchedule = { ...schedule };
+        newSchedule[day][time] = { name: "", color: "" };
+        setSchedule(newSchedule);
+        setClassInfo(null);
+    };
+
     const handleCellClick = (day, time) => {
         const selectedClass = schedule[day][time];
         if (selectedClass.name) {
@@ -62,8 +68,8 @@ const Home = () => {
     return (
         <div className="container">
             <h1 className="my-4">Class Schedule</h1>
-            <ClassForm onSubmit={handleFormSubmit} classInfo={classInfo} />
-            <ScheduleTable schedule={schedule} onCellClick={handleCellClick} />
+            <ClassForm onSubmit={handleFormSubmit} onDelete={handleDeleteClass} classInfo={classInfo} />
+            <ScheduleTable schedule={schedule} onCellClick={handleCellClick} onDeleteClass={handleDeleteClass} />
         </div>
     );
 };

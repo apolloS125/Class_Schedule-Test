@@ -1,4 +1,3 @@
-/* styles/globals.css */
 .schedule-table {
   margin-top: 20px;
 }
@@ -7,10 +6,10 @@
   height: 100px;
   text-align: center;
   vertical-align: middle;
-  color: white; /* Set text color to white for better contrast with colored backgrounds */
+  color: white;
   cursor: pointer;
 }
 
 .schedule-cell.colored-cell {
-  font-weight: bold; /* Make text bold for better readability */
+  font-weight: bold;
 }

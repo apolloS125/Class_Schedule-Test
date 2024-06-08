@@ -1,33 +1,15 @@
-// components/ScheduleTable.js
-import { useState } from 'react';
-
-const times = ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00"];
-const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+import React from 'react';
 
 const ScheduleTable = ({ schedule, onCellClick }) => {
-    const renderCells = (day) => {
-        let row = [];
-        let mergedCells = 0;
+    const times = ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00"];
+    const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
-        for (let i = 0; i < times.length; i++) {
-            const time = times[i];
+    const renderCells = (day) => {
+        return times.map((time) => {
             const cell = schedule[day][time];
 
-            if (mergedCells > 0) {
-                mergedCells--;
-                continue;
-            }
-
             if (cell.name) {
-                mergedCells = 0;
-                for (let j = i + 1; j < times.length; j++) {
-                    if (schedule[day][times[j]].name === cell.name && schedule[day][times[j]].color === cell.color) {
-                        mergedCells++;
-                    } else {
-                        break;
-                    }
-                }
-                row.push(
+                return (
                     <td
                         key={`${day}-${time}`}
                         id={`${day}-${time}`}
@@ -35,14 +17,13 @@ const ScheduleTable = ({ schedule, onCellClick }) => {
                         style={{ backgroundColor: cell.color }}
                         data-day={day}
                         data-time={time}
-                        colSpan={mergedCells + 1}
                         onClick={() => onCellClick(day, time)}
                     >
                         {cell.name}
                     </td>
                 );
             } else {
-                row.push(
+                return (
                     <td
                         key={`${day}-${time}`}
                         id={`${day}-${time}`}
@@ -50,12 +31,10 @@ const ScheduleTable = ({ schedule, onCellClick }) => {
                         data-day={day}
                         data-time={time}
                         onClick={() => onCellClick(day, time)}
-                    >
-                    </td>
+                    ></td>
                 );
             }
-        }
-        return row;
+        });
     };
 
     return (

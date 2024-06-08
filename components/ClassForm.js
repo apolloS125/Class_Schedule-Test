@@ -1,7 +1,6 @@
-// components/ClassForm.js
 import { useState, useEffect } from 'react';
 
-const ClassForm = ({ onSubmit, classInfo }) => {
+const ClassForm = ({ onSubmit, classInfo, onDelete }) => {
     const [className, setClassName] = useState('');
     const [classDay, setClassDay] = useState('Monday');
     const [startTime, setStartTime] = useState('');
@@ -30,6 +29,12 @@ const ClassForm = ({ onSubmit, classInfo }) => {
         setStartTime('');
         setEndTime('');
         setClassColor('#000000');
+    };
+
+    const handleDelete = (e) => {
+        e.preventDefault();
+        onDelete(classInfo.day, classInfo.startTime);
+        resetForm();
     };
 
     return (
@@ -94,7 +99,10 @@ const ClassForm = ({ onSubmit, classInfo }) => {
                     required
                 />
             </div>
-            <button type="submit" className="btn btn-primary">Add Class</button>
+            <button type="submit" className="btn btn-primary mr-2">Add Class</button>
+            {classInfo && (
+                <button type="button" className="btn btn-danger" onClick={handleDelete}>Delete</button>
+            )}
         </form>
     );
 };
