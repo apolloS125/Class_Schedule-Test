@@ -2,6 +2,7 @@ import { useState } from 'react';
 import ClassForm from '../components/ClassForm';
 import ScheduleTable from '../components/ScheduleTable';
 import Swal from 'sweetalert2';
+import html2canvas from 'html2canvas';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const times = ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00"];
@@ -102,6 +103,16 @@ const Home = () => {
         }
     };
 
+    const handleDownload = () => {
+        const table = document.getElementById('scheduleTable');
+        html2canvas(table).then(canvas => {
+            const link = document.createElement('a');
+            link.download = 'schedule.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        });
+    };
+
     return (
         <div className="container">
             <h1 className="my-4">Class Schedule</h1>
@@ -111,6 +122,9 @@ const Home = () => {
                     Delete Class
                 </button>
             )}
+            <button className="btn btn-success mb-3" onClick={handleDownload}>
+                Download Schedule as PNG
+            </button>
             <ScheduleTable schedule={schedule} onCellClick={handleCellClick} />
         </div>
     );

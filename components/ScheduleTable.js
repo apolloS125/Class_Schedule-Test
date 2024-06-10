@@ -64,7 +64,7 @@ const ScheduleTable = ({ schedule, onCellClick }) => {
     };
 
     return (
-        <table className="table table-bordered schedule-table">
+        <table id="scheduleTable" className="table table-bordered schedule-table">
             <thead>
                 <tr>
                     <th>Day/Time</th>
