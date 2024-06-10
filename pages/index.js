@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import ClassForm from '../components/ClassForm';
 import ScheduleTable from '../components/ScheduleTable';
+import Swal from 'sweetalert2';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const times = ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00"];
 const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
@@ -45,21 +47,56 @@ const Home = () => {
         }
     };
 
-    const handleDeleteClass = (day, time) => {
-        const newSchedule = { ...schedule };
-        newSchedule[day][time] = { name: "", color: "" };
-        setSchedule(newSchedule);
-        setClassInfo(null);
+    const handleDeleteClass = () => {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const newSchedule = { ...schedule };
+                const { day, startTime } = classInfo;
+                const className = schedule[day][startTime].name;
+
+                // Remove class from all times it appears on the same day
+                times.forEach(t => {
+                    if (newSchedule[day][t].name === className) {
+                        newSchedule[day][t] = { name: "", color: "" };
+                    }
+                });
+
+                setSchedule(newSchedule);
+                setClassInfo(null);
+                Swal.fire(
+                    'Deleted!',
+                    'Your class has been deleted.',
+                    'success'
+                );
+            }
+        });
     };
 
     const handleCellClick = (day, time) => {
         const selectedClass = schedule[day][time];
         if (selectedClass.name) {
+            let endIndex = times.indexOf(time);
+            for (let i = endIndex + 1; i < times.length; i++) {
+                if (schedule[day][times[i]].name === selectedClass.name) {
+                    endIndex = i;
+                } else {
+                    break;
+                }
+            }
+
             setClassInfo({
                 name: selectedClass.name,
                 day,
                 startTime: time,
-                endTime: times[times.indexOf(time) + 1], // Assuming 1-hour slots
+                endTime: times[endIndex + 1] || "18:00",
                 color: selectedClass.color
             });
         }
@@ -68,8 +105,13 @@ const Home = () => {
     return (
         <div className="container">
             <h1 className="my-4">Class Schedule</h1>
-            <ClassForm onSubmit={handleFormSubmit} onDelete={handleDeleteClass} classInfo={classInfo} />
-            <ScheduleTable schedule={schedule} onCellClick={handleCellClick} onDeleteClass={handleDeleteClass} />
+            <ClassForm onSubmit={handleFormSubmit} classInfo={classInfo} />
+            {classInfo && (
+                <button className="btn btn-danger mb-3" onClick={handleDeleteClass}>
+                    Delete Class
+                </button>
+            )}
+            <ScheduleTable schedule={schedule} onCellClick={handleCellClick} />
         </div>
     );
 };

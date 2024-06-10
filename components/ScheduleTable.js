@@ -5,18 +5,34 @@ const ScheduleTable = ({ schedule, onCellClick }) => {
     const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
     const renderCells = (day) => {
-        let mergedCells = 0; // จำนวนเซลล์ที่รวมกัน
+        let row = [];
+        let mergedCells = 0;
 
-        return times.map((time, index) => {
+        for (let i = 0; i < times.length; i++) {
+            const time = times[i];
             const cell = schedule[day][time];
-            const nextCell = schedule[day][times[index + 1]]; // เซลล์ถัดไปในเวลาเดียวกัน
 
-            if (cell.name && (!nextCell || cell.name !== nextCell.name || cell.color !== nextCell.color)) {
-                const colSpan = mergedCells > 0 ? mergedCells + 1 : 1; // คำนวณค่า colSpan จากจำนวนเซลล์ที่รวมกัน
+            if (mergedCells > 0) {
+                mergedCells--;
+                continue;
+            }
 
-                mergedCells = 0; // รีเซ็ตจำนวนเซลล์ที่รวมกัน
+            if (cell.name) {
+                let colspan = 1;
 
-                return (
+                for (let j = i + 1; j < times.length; j++) {
+                    if (
+                        schedule[day][times[j]].name === cell.name &&
+                        schedule[day][times[j]].color === cell.color
+                    ) {
+                        colspan++;
+                        mergedCells++;
+                    } else {
+                        break;
+                    }
+                }
+
+                row.push(
                     <td
                         key={`${day}-${time}`}
                         id={`${day}-${time}`}
@@ -24,18 +40,14 @@ const ScheduleTable = ({ schedule, onCellClick }) => {
                         style={{ backgroundColor: cell.color }}
                         data-day={day}
                         data-time={time}
-                        colSpan={colSpan}
+                        colSpan={colspan}
                         onClick={() => onCellClick(day, time)}
                     >
                         {cell.name}
                     </td>
                 );
-            } else if (cell.name) {
-                mergedCells++;
-                return null; // เซ็ลล์นี้ถูกรวมเข้าไปในเซ็ลล์ก่อนหน้านี้ จึงไม่ต้องแสดงผล
             } else {
-                mergedCells = 0; // รีเซ็ตจำนวนเซลล์ที่รวมกัน
-                return (
+                row.push(
                     <td
                         key={`${day}-${time}`}
                         id={`${day}-${time}`}
@@ -43,10 +55,12 @@ const ScheduleTable = ({ schedule, onCellClick }) => {
                         data-day={day}
                         data-time={time}
                         onClick={() => onCellClick(day, time)}
-                    ></td>
+                    >
+                    </td>
                 );
             }
-        });
+        }
+        return row;
     };
 
     return (

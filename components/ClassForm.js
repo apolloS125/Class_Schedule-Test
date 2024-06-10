@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
-const ClassForm = ({ onSubmit, classInfo, onDelete }) => {
+const ClassForm = ({ onSubmit, classInfo }) => {
     const [className, setClassName] = useState('');
     const [classDay, setClassDay] = useState('Monday');
-    const [startTime, setStartTime] = useState('');
-    const [endTime, setEndTime] = useState('');
-    const [classColor, setClassColor] = useState('#000000');
+    const [startTime, setStartTime] = useState('08:00');
+    const [endTime, setEndTime] = useState('09:00');
+    const [classColor, setClassColor] = useState('#ffffff');
 
     useEffect(() => {
         if (classInfo) {
@@ -20,21 +20,6 @@ const ClassForm = ({ onSubmit, classInfo, onDelete }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         onSubmit({ className, classDay, startTime, endTime, classColor });
-        resetForm();
-    };
-
-    const resetForm = () => {
-        setClassName('');
-        setClassDay('Monday');
-        setStartTime('');
-        setEndTime('');
-        setClassColor('#000000');
-    };
-
-    const handleDelete = (e) => {
-        e.preventDefault();
-        onDelete(classInfo.day, classInfo.startTime);
-        resetForm();
     };
 
     return (
@@ -89,7 +74,7 @@ const ClassForm = ({ onSubmit, classInfo, onDelete }) => {
                 />
             </div>
             <div className="form-group">
-                <label htmlFor="classColor">Class Color</label>
+                <label htmlFor="classColor">Color</label>
                 <input
                     type="color"
                     className="form-control"
@@ -99,10 +84,7 @@ const ClassForm = ({ onSubmit, classInfo, onDelete }) => {
                     required
                 />
             </div>
-            <button type="submit" className="btn btn-primary mr-2">Add Class</button>
-            {classInfo && (
-                <button type="button" className="btn btn-danger" onClick={handleDelete}>Delete</button>
-            )}
+            <button type="submit" className="btn btn-primary">Save Class</button>
         </form>
     );
 };
