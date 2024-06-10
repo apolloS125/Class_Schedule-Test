@@ -27,6 +27,7 @@ const initializeSchedule = () => {
 const Home = () => {
     const [schedule, setSchedule] = useState(initializeSchedule);
     const [classInfo, setClassInfo] = useState(null);
+    const [darkMode, setDarkMode] = useState(false);
 
     const handleFormSubmit = ({ className, classDay, startTime, endTime, classColor }) => {
         const newSchedule = { ...schedule };
@@ -102,7 +103,7 @@ const Home = () => {
             });
         }
     };
-    //handle dowload
+
     const handleDownload = () => {
         const table = document.getElementById('scheduleTable');
         html2canvas(table).then(canvas => {
@@ -113,20 +114,26 @@ const Home = () => {
         });
     };
 
-    //mainpage
+    const toggleDarkMode = () => {
+        setDarkMode(!darkMode);
+    };
+
     return (
-        <div className="container">
+        <div className={`container ${darkMode ? 'dark-mode' : ''}`}>
             <h1 className="my-4">Class Schedule</h1>
+            <button className="btn btn-secondary mb-3" onClick={toggleDarkMode}>
+                Toggle Dark Mode
+            </button>
             <ClassForm onSubmit={handleFormSubmit} classInfo={classInfo} />
             {classInfo && (
                 <button className="btn btn-danger mb-3" onClick={handleDeleteClass}>
                     Delete Class
                 </button>
             )}
-            <ScheduleTable schedule={schedule} onCellClick={handleCellClick} />
             <button className="btn btn-success mb-3" onClick={handleDownload}>
                 Download Schedule as PNG
             </button>
+            <ScheduleTable schedule={schedule} onCellClick={handleCellClick} />
         </div>
     );
 };
