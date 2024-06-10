@@ -102,7 +102,7 @@ const Home = () => {
             });
         }
     };
-
+    //handle dowload
     const handleDownload = () => {
         const table = document.getElementById('scheduleTable');
         html2canvas(table).then(canvas => {
@@ -113,6 +113,7 @@ const Home = () => {
         });
     };
 
+    //mainpage
     return (
         <div className="container">
             <h1 className="my-4">Class Schedule</h1>
@@ -122,10 +123,10 @@ const Home = () => {
                     Delete Class
                 </button>
             )}
+            <ScheduleTable schedule={schedule} onCellClick={handleCellClick} />
             <button className="btn btn-success mb-3" onClick={handleDownload}>
                 Download Schedule as PNG
             </button>
-            <ScheduleTable schedule={schedule} onCellClick={handleCellClick} />
         </div>
     );
 };
