@@ -3,7 +3,6 @@ import ClassForm from '../components/ClassForm';
 import ScheduleTable from '../components/ScheduleTable';
 import Swal from 'sweetalert2';
 import html2canvas from 'html2canvas';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 const times = ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00"];
 const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
@@ -27,7 +26,6 @@ const initializeSchedule = () => {
 const Home = () => {
     const [schedule, setSchedule] = useState(initializeSchedule);
     const [classInfo, setClassInfo] = useState(null);
-    const [darkMode, setDarkMode] = useState(false);
 
     const handleFormSubmit = ({ className, classDay, startTime, endTime, classColor }) => {
         const newSchedule = { ...schedule };
@@ -114,26 +112,19 @@ const Home = () => {
         });
     };
 
-    const toggleDarkMode = () => {
-        setDarkMode(!darkMode);
-    };
-
     return (
-        <div className={`container ${darkMode ? 'dark-mode' : ''}`}>
+        <div className="container">
             <h1 className="my-4">Class Schedule</h1>
-            <button className="btn btn-secondary mb-3" onClick={toggleDarkMode}>
-                Toggle Dark Mode
-            </button>
             <ClassForm onSubmit={handleFormSubmit} classInfo={classInfo} />
             {classInfo && (
                 <button className="btn btn-danger mb-3" onClick={handleDeleteClass}>
                     Delete Class
                 </button>
             )}
+            <ScheduleTable schedule={schedule} onCellClick={handleCellClick} />
             <button className="btn btn-success mb-3" onClick={handleDownload}>
                 Download Schedule as PNG
             </button>
-            <ScheduleTable schedule={schedule} onCellClick={handleCellClick} />
         </div>
     );
 };

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const ClassForm = ({ onSubmit, classInfo }) => {
     const [className, setClassName] = useState('');
@@ -42,13 +42,12 @@ const ClassForm = ({ onSubmit, classInfo }) => {
                     id="classDay"
                     value={classDay}
                     onChange={(e) => setClassDay(e.target.value)}
-                    required
                 >
-                    <option value="Monday">Monday</option>
-                    <option value="Tuesday">Tuesday</option>
-                    <option value="Wednesday">Wednesday</option>
-                    <option value="Thursday">Thursday</option>
-                    <option value="Friday">Friday</option>
+                    <option>Monday</option>
+                    <option>Tuesday</option>
+                    <option>Wednesday</option>
+                    <option>Thursday</option>
+                    <option>Friday</option>
                 </select>
             </div>
             <div className="form-group">
@@ -74,14 +73,13 @@ const ClassForm = ({ onSubmit, classInfo }) => {
                 />
             </div>
             <div className="form-group">
-                <label htmlFor="classColor">Color</label>
+                <label htmlFor="classColor">Class Color</label>
                 <input
                     type="color"
                     className="form-control"
                     id="classColor"
                     value={classColor}
                     onChange={(e) => setClassColor(e.target.value)}
-                    required
                 />
             </div>
             <button type="submit" className="btn btn-primary">Save Class</button>
