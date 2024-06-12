@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import ClassForm from '../components/ClassForm';
 import ScheduleTable from '../components/ScheduleTable';
-import CustomScheduleEditor from '../components/CustomScheduleEditor';
 import Swal from 'sweetalert2';
 import html2canvas from 'html2canvas';
 
@@ -63,6 +62,7 @@ const Home = () => {
                 const { day, startTime } = classInfo;
                 const className = schedule[day][startTime].name;
 
+                // Remove class from all times it appears on the same day
                 times.forEach(t => {
                     if (newSchedule[day][t].name === className) {
                         newSchedule[day][t] = { name: "", color: "" };
@@ -112,10 +112,6 @@ const Home = () => {
         });
     };
 
-    const handleUpdateSchedule = (newSchedule) => {
-        setSchedule(newSchedule);
-    };
-
     return (
         <div className="container">
             <h1 className="my-4">Class Schedule</h1>
@@ -129,7 +125,6 @@ const Home = () => {
             <button className="btn btn-success mb-3" onClick={handleDownload}>
                 Download Schedule as PNG
             </button>
-            <CustomScheduleEditor onUpdateSchedule={handleUpdateSchedule} days={days} times={times} />
         </div>
     );
 };
