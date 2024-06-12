@@ -121,7 +121,7 @@ const Home = () => {
                     Delete Class
                 </button>
             )}
-            <ScheduleTable schedule={schedule} onCellClick={handleCellClick} />
+            <ScheduleTable id="scheduleTable" schedule={schedule} onCellClick={handleCellClick} />
             <button className="btn btn-success mb-3" onClick={handleDownload}>
                 Download Schedule as PNG
             </button>
