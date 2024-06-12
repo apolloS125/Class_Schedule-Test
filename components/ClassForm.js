@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const ClassForm = ({ onSubmit, classInfo }) => {
     const [className, setClassName] = useState('');
@@ -20,6 +20,11 @@ const ClassForm = ({ onSubmit, classInfo }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         onSubmit({ className, classDay, startTime, endTime, classColor });
+        setClassName('');
+        setClassDay('Monday');
+        setStartTime('08:00');
+        setEndTime('09:00');
+        setClassColor('#ffffff');
     };
 
     return (
@@ -42,12 +47,13 @@ const ClassForm = ({ onSubmit, classInfo }) => {
                     id="classDay"
                     value={classDay}
                     onChange={(e) => setClassDay(e.target.value)}
+                    required
                 >
-                    <option>Monday</option>
-                    <option>Tuesday</option>
-                    <option>Wednesday</option>
-                    <option>Thursday</option>
-                    <option>Friday</option>
+                    {days.map(day => (
+                        <option key={day} value={day}>
+                            {day}
+                        </option>
+                    ))}
                 </select>
             </div>
             <div className="form-group">
@@ -80,9 +86,12 @@ const ClassForm = ({ onSubmit, classInfo }) => {
                     id="classColor"
                     value={classColor}
                     onChange={(e) => setClassColor(e.target.value)}
+                    required
                 />
             </div>
-            <button type="submit" className="btn btn-primary">Save Class</button>
+            <button type="submit" className="btn btn-primary">
+                {classInfo ? 'Update Class' : 'Add Class'}
+            </button>
         </form>
     );
 };
